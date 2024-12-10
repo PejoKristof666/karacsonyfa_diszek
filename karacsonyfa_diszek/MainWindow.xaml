@@ -8,47 +8,94 @@
         Title="MainWindow" Height="600" Width="800">
     <Grid Background="Black">
         <Grid.RowDefinitions>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="60"/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-    
-        <Border Grid.ColumnSpan="3" Padding="10">
-            <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="20">
-                Karácsonyfa díszek
-            </TextBlock>
-        </Border>
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
-            <TextBlock Foreground="White" FontSize="20" Padding="10">
-                Bolt
-            </TextBlock>
-            <Border Padding="10">
-                <StackPanel Name="Store" Background="White" Margin="0 50 0 0">
-
-                </StackPanel>
-            </Border>
-        </Grid>
-        <Grid Grid.Row="2" Grid.ColumnSpan="2">
-            <TextBlock Foreground="White" FontSize="20" Padding="10">
-                Kosár
-            </TextBlock>
-            <Border Padding="10">
-                <StackPanel Name="Kosar" Background="White" Margin="0 50 0 0">
-                    
-                </StackPanel>
-            </Border>
+        <TextBlock
+            Foreground="White"
+            FontSize="40"
+            TextAlignment="Center"
+            >Karácsonyfa díszek</TextBlock>
+        <Border
             
-        </Grid>
-        <Grid Width="250" Grid.Row="2" Grid.Column="2" Margin="5 55 0 -20">
-            <TextBlock Foreground="White" FontSize="20" HorizontalAlignment="Center">Végösszeg: </TextBlock>
-            <Button FontSize="20" Width="180" Height="80">
-                Kifizetés
-            </Button>
-        </Grid>
+            Grid.Row="1"
+            Padding="10"
+            >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Foreground="White"
+                    FontSize="20"
+                    VerticalAlignment="Center"
+                    >Bolt</TextBlock>
+                <Border
+                    Margin="5 5 5 5"
+                    CornerRadius="20"
+                    Background="Lime"
+                    Grid.Row="1"
+                    Padding="10"
+                    >
+                    <StackPanel
+                    Orientation="Horizontal"
+                    Name="Store"
+                    >
+
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+
+        </Border>
+        <Border
+            Grid.Row="2"
+            Padding="5"
+            >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Padding="5"
+                    Foreground="White"
+                    FontSize="20"
+                    VerticalAlignment="Center"
+                    >Kosár</TextBlock>
+                <Border
+                    Margin="5 5 5 5"
+                    Background="Lime"
+                    CornerRadius="20"
+                    Grid.Row="1"
+                    Padding="10"
+                    >
+                    <StackPanel
+                        
+                    Orientation="Horizontal"
+                    Name="Cart"></StackPanel>
+                </Border>
+                <TextBlock
+                    Foreground="White"
+                    FontSize="20"
+                    Grid.Column="1"
+                    TextAlignment="Center"
+                    VerticalAlignment="Center"
+                    >Végösszeg:</TextBlock>
+                <Button
+                    FontSize="20"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Margin="10">Kifizetés
+                </Button>
+            </Grid>
+
+        </Border>
     </Grid>
 </Window>
