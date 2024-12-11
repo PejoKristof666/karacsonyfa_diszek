@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace karacsonyfa_diszek
 {
@@ -21,16 +23,44 @@ namespace karacsonyfa_diszek
     public partial class MainWindow : Window
     {
         disz diszs = new disz() { name = "Kolbász", price = 2000, stock = 50000 };
+        int sumNum = 0;
+        Dictionary<int, int> soldItems = new Dictionary<int, int>();
+
+        List<disz> allDisz = new List<disz>();
         public MainWindow()
         {
             InitializeComponent();
-            Test();
+            Load();
+            //Test();
         }
         void Test()
         {
             
             createStoreItem(diszs);
             
+        }
+
+        async void Load()
+        {
+            HttpClient client = new HttpClient();
+            try
+            {
+                string url = "http://127.1.1.1:3000/disz";
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                allDisz = JsonConvert.DeserializeObject<List<disz>>(responseMessage);
+                foreach (disz item in allDisz)
+                {
+                    createStoreItem(item);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message);
+            }
         }
 
         void createStoreItem(disz oneDisz)
@@ -87,7 +117,25 @@ namespace karacsonyfa_diszek
 
             BuyButton.Click += (s, e) =>
             {
-                createCartItem(oneDisz, countBox.Text);
+                if (soldItems.ContainsKey(oneDisz.id))
+                {
+                    MessageBox.Show("Már megvettem");
+                }
+                else
+                {
+                    soldItems.Add(oneDisz.id, int.Parse(countBox.Text));
+                    if (int.Parse(countBox.Text) <= oneDisz.stock)
+                    {
+                        createCartItem(oneDisz, countBox.Text);
+                        sumNum += oneDisz.price * int.Parse(countBox.Text);
+                        UpdateSum();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nincs elegendő készlet");
+                    }
+                }
+                
             };
 
             name.TextAlignment = TextAlignment.Center;
@@ -97,6 +145,12 @@ namespace karacsonyfa_diszek
             countBox.Margin = new Thickness(5, -12, 5, 5);
             countBox.Height = 20;
         }
+
+        void UpdateSum()
+        {
+            sum.Text = $"Végösszeg: {sumNum} $";
+        }
+
         void createCartItem(disz oneDisz, string num)
         {
             Border oneBorder = new Border();
@@ -159,19 +213,30 @@ namespace karacsonyfa_diszek
 
             moreButton.Click += (s, e) =>
             {
-                int currentValue = int.Parse(countBox.Text);
-                currentValue++;
-                countBox.Text = currentValue.ToString();
+                if (int.Parse(countBox.Text) <=oneDisz.stock)
+                {
+                    soldItems[oneDisz.id]++;
+                    int currentValue = int.Parse(countBox.Text);
+                    currentValue++;
+                    countBox.Text = currentValue.ToString();
+                    sumNum += oneDisz.price;
+                    UpdateSum();
+                }
             };
             lessButton.Click += (s, e) =>
             {
                 int currentValue = int.Parse(countBox.Text);
                 currentValue--;
+                sumNum -= oneDisz.price;
+                UpdateSum();
+                soldItems[oneDisz.id]++;
                 if (currentValue < 1)
                 {
+                    soldItems.Remove(oneDisz.id);
                     Cart.Children.Remove(oneBorder);
                 }
                 countBox.Text = currentValue.ToString();
+                
             };
 
             name.TextAlignment = TextAlignment.Center;
@@ -180,6 +245,10 @@ namespace karacsonyfa_diszek
             countBox.TextAlignment = TextAlignment.Center;
             countBox.Margin = new Thickness(5, -12, 5, 5);
             countBox.Height = 20;
+        }
+        void Buy(Object s, EventArgs e)
+        {
+            
         }
     }
 }

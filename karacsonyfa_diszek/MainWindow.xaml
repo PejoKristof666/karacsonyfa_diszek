@@ -82,13 +82,15 @@
                     Name="Cart"></StackPanel>
                 </Border>
                 <TextBlock
+                    Name="sum"
                     Foreground="White"
                     FontSize="20"
                     Grid.Column="1"
                     TextAlignment="Center"
                     VerticalAlignment="Center"
-                    >Végösszeg:</TextBlock>
+                    >Végösszeg: 0 $</TextBlock>
                 <Button
+                    Click="Buy"
                     FontSize="20"
                     Grid.Column="1"
                     Grid.Row="1"
